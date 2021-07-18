@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "WeatherLinkWebcamUpdater": {
+      "commandName": "Project",
+      "environmentVariables": {
+      }
+    }
+  }
+}
