@@ -9,7 +9,6 @@ WORKDIR /src
 COPY WeatherLinkWebcamUpdater.csproj .
 RUN dotnet restore WeatherLinkWebcamUpdater.csproj
 COPY . .
-RUN dotnet build WeatherLinkWebcamUpdater.csproj -c Release -o /app/build --no-restore
 RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
 RID=linux-x64 ; \
 elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
@@ -17,6 +16,7 @@ RID=linux-arm64 ; \
 elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
 RID=linux-arm ; \
 fi \
+&& dotnet build WeatherLinkWebcamUpdater.csproj -c Release -o /app/build --no-restore \
 && dotnet publish WeatherLinkWebcamUpdater.csproj -c Release --no-build -r $RID -o /app/publish
 
 FROM base AS final
