@@ -13,9 +13,9 @@ namespace WeatherLinkWebcamUpdater
 {
     class Program
     {
-        private static readonly CancellationTokenSource _cts = new CancellationTokenSource();
-        private static readonly Timer _updateTimer = new Timer(async o => await UpdateCamera(), null, Timeout.Infinite, Timeout.Infinite);
-        private static readonly HttpClientHandler _httpClientHandler = new HttpClientHandler();
+        private static readonly CancellationTokenSource _cts = new ();
+        private static readonly Timer _updateTimer = new (async o => await UpdateCamera(), null, Timeout.Infinite, Timeout.Infinite);
+        private static readonly HttpClientHandler _httpClientHandler = new ();
 
         private static string _weatherLinkLocalIp = "127.0.0.1";
         private static string _weatherCamIp = "127.0.0.1";
@@ -31,6 +31,7 @@ namespace WeatherLinkWebcamUpdater
 
         static async Task Main()
         {
+            Console.WriteLine("Starting...");
             Console.CancelKeyPress += Console_CancelKeyPress;
             _updateTimer.Change(TimeSpan.Zero, TimeSpan.FromMinutes(1));
             _weatherLinkLocalIp = Environment.GetEnvironmentVariable("WEATHER_LINK_IP");
