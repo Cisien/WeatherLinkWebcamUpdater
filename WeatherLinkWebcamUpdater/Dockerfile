@@ -1,11 +1,7 @@
-FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/runtime:7.0 AS base
-ARG TARGETPLATFORM
-ARG BUILDPLATFORM
+FROM mcr.microsoft.com/dotnet/runtime:7.0 AS base
 WORKDIR /app
 
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-ARG TARGETPLATFORM
-ARG BUILDPLATFORM
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY WeatherLinkWebcamUpdater.csproj .
 RUN dotnet restore WeatherLinkWebcamUpdater.csproj
