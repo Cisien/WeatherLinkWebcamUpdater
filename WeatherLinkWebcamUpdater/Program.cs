@@ -22,10 +22,9 @@ namespace WeatherLinkWebcamUpdater
         private static string _weatherCamUsername = string.Empty;
         private static string _weatherCamPassword = string.Empty;
 
-        private static XmlSerializer _xmlSerializer = new XmlSerializer(typeof(VideoOverlay));
-        private static JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+        private static readonly XmlSerializer _xmlSerializer = new(typeof(VideoOverlay));
+        private static readonly JsonSerializerOptions _jsonOptions = new()
         {
-            IgnoreNullValues = true,
             PropertyNameCaseInsensitive = true,
             AllowTrailingCommas = true
         };
@@ -66,23 +65,25 @@ namespace WeatherLinkWebcamUpdater
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credsEncoded);
 
             var overlayString = "Unavailable";
-            if (currentConditions != null && currentConditions.Data.Conditions.Count != 0)
+            if ((currentConditions?.Data?.Conditions?.Count ?? 0) == 0)
             {
-                var cc = currentConditions.Data.Conditions[0];
-                var bar = currentConditions.Data.Conditions[2];
-                var trend = "=";
-
-                if (bar.BarTrend > 0)
-                {
-                    trend = "+";
-                }
-                else if (bar.BarTrend < 0)
-                {
-                    trend = "-";
-                }
-
-                overlayString = $"{cc.Temp:00.0}f {33.8638815 * bar.BarSeaLevel:000.0}mb{trend} {DegreesToCardinalDetailed(cc.WindDirScalarAvgLast1_Min ?? 0)} {cc.WindSpeedAvgLast1_Min ?? 0.0d:0.0}mph {cc.RainfallLast24_Hr * 0.01:0.00}in {cc.RainRateLast * 0.01:0.00}in/hr";
+                return;
             }
+
+            var cc = currentConditions.Data.Conditions[0];
+            var bar = currentConditions.Data.Conditions[2];
+            var trend = "=";
+
+            if (bar.BarTrend > 0)
+            {
+                trend = "+";
+            }
+            else if (bar.BarTrend < 0)
+            {
+                trend = "-";
+            }
+
+            overlayString = $"{cc.Temp:00.0}f {33.8638815 * bar.BarSeaLevel:000.0}mb{trend} {DegreesToCardinalDetailed(cc.WindDirScalarAvgLast1_Min ?? 0)} {cc.WindSpeedAvgLast1_Min ?? 0.0d:0.0}mph {cc.RainfallLast24_Hr * 0.01:0.00}in {cc.RainRateLast * 0.01:0.00}in/hr";
 
             var overlay = new VideoOverlay
             {
