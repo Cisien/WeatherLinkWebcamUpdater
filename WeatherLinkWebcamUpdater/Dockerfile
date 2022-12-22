@@ -17,7 +17,7 @@ RID=linux-arm64 ; \
 elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
 RID=linux-arm ; \
 fi \
-dotnet publish WeatherLinkWebcamUpdater.csproj -c Release --no-build -r $RID -o /app/publish
+&& dotnet publish WeatherLinkWebcamUpdater.csproj -c Release --no-build -r $RID -o /app/publish
 
 FROM base AS final
 WORKDIR /app
