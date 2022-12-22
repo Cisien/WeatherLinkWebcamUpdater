@@ -16,7 +16,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
     RID=linux-arm64 ; \
     elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
     RID=linux-arm ; \
-    fi \
+    fi
 
 FROM build AS publish
 RUN dotnet publish WeatherLinkWebcamUpdater.csproj -c Release -r $RID -o /app/publish
