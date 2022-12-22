@@ -16,12 +16,10 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
     RID=linux-arm64 ; \
     elif [ "$TARGETPLATFORM" = "linux/arm/v7" ]; then \
     RID=linux-arm ; \
-    fi
-
-FROM build AS publish
-RUN dotnet publish WeatherLinkWebcamUpdater.csproj -c Release -r $RID -o /app/publish
+    fi \
+    dotnet publish WeatherLinkWebcamUpdater.csproj -c Release --no-build -r $RID -o /app/publish
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "WeatherLinkWebcamUpdater.dll"]
