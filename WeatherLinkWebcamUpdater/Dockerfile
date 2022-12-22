@@ -16,7 +16,7 @@ RID=linux-arm ; \
 fi \
 && dotnet restore WeatherLinkWebcamUpdater.csproj -r $RID \
 && dotnet build WeatherLinkWebcamUpdater.csproj -c Release -r $RID --no-restore \
-&& dotnet publish WeatherLinkWebcamUpdater.csproj -c Release --no-build -r $RID -o /app/publish
+&& dotnet publish WeatherLinkWebcamUpdater.csproj -c Release --no-build -r $RID --no-self-contained -o /app/publish
 
 FROM base AS final
 WORKDIR /app
